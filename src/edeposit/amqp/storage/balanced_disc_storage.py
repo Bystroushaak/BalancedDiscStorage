@@ -55,14 +55,40 @@ class BalancedDiscStorage(object):
         assert hasattr(file_obj, "read"), ERR
         assert hasattr(file_obj, "seek"), ERR
 
-    def _get_file_path(self, file_hash, create_path=False):
-        hash_list = list(file_hash)
-        path = os.path.join(self.path, hash_list.pop(0))
+    def _create_file_path(self, file_hash, path=None, hash_list=None):
+        if not hash_list:
+            hash_list = list(file_hash)
 
-        if os.path.exists(path):
-            files = os.listdir(path)
-        else:
-            pass
+        if not path:
+            path = os.path.join(
+                self.path,
+                hash_list.pop(0)
+            )
+
+        if not os.path.exists(path):
+            os.mkdir(path)
+            return self._create_file_path(
+                file_hash=file_hash,
+                path=path,
+                hash_list=hash_list
+            )
+
+        files = os.listdir(path)
+
+        if file_hash in files:
+            return path
+
+        if len(files) < self._dir_limit:
+            return path
+
+        return self._create_file_path(
+            file_hash=file_hash,
+            path=os.path.join(
+                path,
+                hash_list.pop(0)
+            ),
+            hash_list=hash_list
+        )
 
     def add_file(self, file_obj, unpacker=None):  # TODO: unpacker
         self._check_interface(file_obj)
