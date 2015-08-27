@@ -99,7 +99,7 @@ class BalancedDiscStorage(object):
             hash_list=hash_list
         )
 
-    def dir_path_from_hash(self, file_hash, path=None, hash_list=None):
+    def _dir_path_from_hash(self, file_hash, path=None, hash_list=None):
         # first, non-recursive call - parse `file_hash`
         if not hash_list:
             hash_list = list(file_hash)
@@ -131,7 +131,7 @@ class BalancedDiscStorage(object):
             raise IOError("File not found in the structure.")
 
         # look into subdirectory
-        return self.dir_path_from_hash(
+        return self._dir_path_from_hash(
             file_hash=file_hash,
             path=next_path,
             hash_list=hash_list
@@ -139,7 +139,7 @@ class BalancedDiscStorage(object):
 
     def file_path_from_hash(self, file_hash):
         return os.path.join(
-            self.dir_path_from_hash(file_hash),
+            self._dir_path_from_hash(file_hash),
             file_hash
         )
 
@@ -192,7 +192,16 @@ class BalancedDiscStorage(object):
         return self.delete_by_hash(file_hash)
 
     def delete_by_hash(self, file_hash):
-        pass
+        full_path = self._dir_path_from_hash(file_hash)
+
+        return self.delete_by_path(full_path)
 
     def delete_by_path(self, path):
-        pass
+        if not os.path.exists(path):
+            raise IOError("Unknown path '%s'!" % path)
+
+        if os.path.isfile(path):
+            os.unlink(path)
+            return
+
+        shutil.rmtree(path)
