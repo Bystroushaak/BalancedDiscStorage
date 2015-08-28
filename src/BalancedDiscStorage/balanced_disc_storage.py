@@ -25,6 +25,9 @@ class BalancedDiscStorage(object):
         if not os.path.exists(self.path):
             raise IOError("`%s` not found." % self.path)
 
+        if not os.path.isdir(self.path):
+            raise IOError("`%s` is not a directory!" % self.path)
+
         if not os.access(self.path, (os.R_OK or os.W_OK)):
             raise IOError(
                 "Can't access `%s`, please check permissions." % self.path
