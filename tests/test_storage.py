@@ -9,6 +9,8 @@ import shutil
 import os.path
 import tempfile
 
+from os.path import join
+
 import pytest
 
 from BalancedDiscStorage import BalancedDiscStorage
@@ -42,8 +44,24 @@ def test_init():
         BalancedDiscStorage()
 
 
+def test_init_exists():
+    with pytest.raises(IOError):
+        BalancedDiscStorage("/azgabash")
+
+
+def test_init_is_directory():
+    fn_path = join(TEMP_DIR, "azgabash")
+    with open(fn_path, "w") as f:
+        f.write("-")
+
+    with pytest.raises(IOError):
+        BalancedDiscStorage(fn_path)
+
+    os.unlink(fn_path)
+
+
 def test_rw_check():
-    non_writeable = os.path.join(TEMP_DIR, "non_writeable")
+    non_writeable = join(TEMP_DIR, "non_writeable")
     os.mkdir(non_writeable)
     os.chmod(non_writeable, 0000)
 
