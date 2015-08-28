@@ -115,3 +115,14 @@ def test_rw_check():
 
     os.chmod(non_writeable, 0777)
     shutil.rmtree(non_writeable)
+
+
+def test_add_file(bds, a_file, a_file_hash):
+    bds.add_file(a_file)
+
+    first_branch = join(TEMP_DIR, "a")
+    first_added_file = join(first_branch, a_file_hash)
+    assert os.path.exists(first_branch)
+    assert os.path.isdir(first_branch)
+    assert os.path.exists(first_added_file)
+    assert os.path.isfile(first_added_file)
