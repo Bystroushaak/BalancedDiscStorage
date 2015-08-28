@@ -1,0 +1,4 @@
+*.pyc
+src/BalancedDiscStorage.egg-info
+dist/
+docs/_build
