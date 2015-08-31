@@ -102,7 +102,7 @@ class BalancedDiscStorage(object):
             hash_list=hash_list
         )
 
-    def _dir_path_from_hash(self, file_hash, path=None, hash_list=None):
+    def file_path_from_hash(self, file_hash, path=None, hash_list=None):
         # first, non-recursive call - parse `file_hash`
         if hash_list is None:
             hash_list = list(file_hash)
@@ -134,18 +134,11 @@ class BalancedDiscStorage(object):
             raise IOError("File not found in the structure.")
 
         # look into subdirectory
-        return self._dir_path_from_hash(
+        return self.file_path_from_hash(
             file_hash=file_hash,
             path=next_path,
             hash_list=hash_list
         )
-
-    def file_path_from_hash(self, file_hash):
-        return self._dir_path_from_hash(file_hash)
-        # return os.path.join(
-        #     self._dir_path_from_hash(file_hash),
-        #     file_hash
-        # )
 
     def add_file(self, file_obj):
         self._check_interface(file_obj)
@@ -196,9 +189,34 @@ class BalancedDiscStorage(object):
         return self.delete_by_hash(file_hash)
 
     def delete_by_hash(self, file_hash):
-        full_path = self._dir_path_from_hash(file_hash)
+        full_path = self.file_path_from_hash(file_hash)
 
         return self.delete_by_path(full_path)
+
+    def _recursive_remove_blank_dirs(self, path):
+        path = os.path.abspath(path)
+
+        # never delete root of the storage or smaller paths
+        if path == self.path or len(path) <= len(self.path):
+            return
+
+        # if the path doesn't exists, go one level upper
+        if not os.path.exists(path):
+            return self._recursive_remove_blank_dirs(
+                os.path.dirname(path)
+            )
+
+        # if the directory contains files, end yourself
+        if os.listdir(path):
+            return
+
+        # blank directories can be removed
+        shutil.rmtree(path)
+
+        # go one level up, check whether the directory is blank too
+        return self._recursive_remove_blank_dirs(
+            os.path.dirname(path)
+        )
 
     def delete_by_path(self, path):
         if not os.path.exists(path):
@@ -206,6 +224,7 @@ class BalancedDiscStorage(object):
 
         if os.path.isfile(path):
             os.unlink(path)
-            return
+            return self._recursive_remove_blank_dirs(path)
 
         shutil.rmtree(path)
+        self._recursive_remove_blank_dirs(path)
