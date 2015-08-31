@@ -18,7 +18,7 @@ class BalancedDiscStorage(object):
 
         self._dir_limit = 32000
         self._read_bs = 2**16
-        self._max_zipfiles = self._dir_limit
+        self._max_zipfiles = self._dir_limit  #: how many files can be in .zip
         self._hash_builder = hashlib.sha256
 
     def _assert_path_is_rw(self):
