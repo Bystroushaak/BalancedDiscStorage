@@ -252,3 +252,25 @@ def test_path_from_hash_for_zip(bds, archive_file_path, archive_file_hash):
     assert bds.file_path_from_hash(archive_file_hash) == archive_file_path
 
 
+def test_delete_by_file(bds, b_file, b_file_path):
+    assert os.path.exists(b_file_path)
+    assert os.path.isfile(b_file_path)
+
+    bds.delete_by_file(b_file)
+
+    assert not os.path.exists(b_file_path)
+    assert not os.path.isfile(b_file_path)
+
+
+def test_delete_by_file_zip(bds, archive_file, archive_file_path):
+    assert os.path.exists(archive_file_path)
+    assert os.path.isdir(archive_file_path)
+
+    bds.delete_by_file(archive_file)
+
+    assert not os.path.exists(archive_file_path)
+    assert not os.path.isdir(archive_file_path)
+
+    # check that blank directories are also cleaned
+    assert not os.path.exists(join(TEMP_DIR, "b"))
+
