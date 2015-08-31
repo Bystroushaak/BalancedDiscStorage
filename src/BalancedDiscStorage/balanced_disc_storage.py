@@ -146,7 +146,7 @@ class BalancedDiscStorage(object):
             file_hash
         )
 
-    def add_file(self, file_obj):  # TODO: unpacker
+    def add_file(self, file_obj):
         self._check_interface(file_obj)
 
         file_hash = self._get_hash(file_obj)
@@ -159,7 +159,7 @@ class BalancedDiscStorage(object):
 
         return final_path
 
-    def unpack_zip(self, file_obj, path):
+    def _unpack_zip(self, file_obj, path):
         old_cwd = os.getcwd()
         os.chdir(path)
 
@@ -183,7 +183,7 @@ class BalancedDiscStorage(object):
             shutil.rmtree(full_path)
 
         os.mkdir(full_path)
-        self.unpack_zip(zip_file_obj, full_path)
+        self._unpack_zip(zip_file_obj, full_path)
 
         return full_path
 
