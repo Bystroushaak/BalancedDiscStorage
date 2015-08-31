@@ -10,16 +10,20 @@ import sh
 
 
 # Functions & classes =========================================================
-def look_for_hash(filename, startswith):
+def look_for_hash(filename, startswith, number):
+    found = 0
     for cnt in xrange(99999999999999999):
         with open(filename, "w") as f:
             f.write(str(cnt))
 
-        file_hash = sh.sha256sum(args.filename)
+        file_hash = sh.sha256sum(args.filename).split()[0]
 
         if file_hash.startswith(startswith):
-            print file_hash
-            break
+            found += 1
+            print file_hash, cnt
+
+            if found == number:
+                break
 
 
 # Main program ================================================================
@@ -40,9 +44,17 @@ if __name__ == '__main__':
         default="file.txt",
         help="Name of the file which will be checked. Default `file.txt`."
     )
+    parser.add_argument(
+        "-n",
+        "--number",
+        default=1,
+        type=int,
+        help="Number of hashes which should be found. Default 1."
+    )
     args = parser.parse_args()
 
     look_for_hash(
         filename=args.filename,
-        startswith=args.startswith
+        startswith=args.startswith,
+        number=args.number,
     )
