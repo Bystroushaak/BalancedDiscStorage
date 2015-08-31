@@ -97,7 +97,7 @@ def aa_file_path():
 def archive_file_path():
     file_hash = archive_file_hash()
 
-    return join(TEMP_DIR, file_hash[0], file_hash)
+    return join(TEMP_DIR, file_hash[0], file_hash) + "/"
 
 
 @pytest.fixture
@@ -225,5 +225,30 @@ def test_add_archive_as_dir(bds, archive_file, archive_file_hash,
         assert os.path.isfile(filename)
 
 
+def test_add_archie_twice(bds, archive_file, archive_file_hash,
+                          archive_file_path, archive_filenames):
+    bds.add_archive_as_dir(archive_file)
+    bds.add_archive_as_dir(archive_file)
+
+    assert os.path.exists(archive_file_path)
+    assert os.path.isdir(archive_file_path)
+
+    for filename in archive_filenames:
+        assert os.path.exists(filename)
+        assert os.path.isfile(filename)
+
+
+def test_too_many_zip_files(bds, archive_file):
+    max_zipfiles = bds._max_zipfiles
+    bds._max_zipfiles = 1
+
+    with pytest.raises(ValueError):
+        bds.add_archive_as_dir(archive_file)
+
+    bds._max_zipfiles = max_zipfiles
+
+
+def test_path_from_hash_for_zip(bds, archive_file_path, archive_file_hash):
+    assert bds.file_path_from_hash(archive_file_hash) == archive_file_path
 
 
