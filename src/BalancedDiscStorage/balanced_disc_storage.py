@@ -66,6 +66,9 @@ class BalancedDiscStorage(object):
         if hash_list is None:
             hash_list = list(file_hash)
 
+        if not hash_list:
+            raise IOError("Directory structure is too full!")
+
         # first, non-recursive call - look for subpath of `self.path`
         if not path:
             path = os.path.join(
@@ -103,6 +106,9 @@ class BalancedDiscStorage(object):
         # first, non-recursive call - parse `file_hash`
         if hash_list is None:
             hash_list = list(file_hash)
+
+        if not hash_list:
+            raise IOError("Directory structure is too full!")
 
         # first, non-recursive call - look for subpath of `self.path`
         if not path:
