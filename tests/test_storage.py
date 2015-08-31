@@ -71,6 +71,11 @@ def aa_file_hash():
     return "aae02129362d611717b6c00ad8d73bf820a0f6d88fca8e515cafe78d3a335965"
 
 
+@pytest.fixture
+def b_file_path():
+    return join(TEMP_DIR, "b", b_file_hash())
+
+
 # Tests =======================================================================
 def setup_module():
     global TEMP_DIR
@@ -122,22 +127,21 @@ def test_add_file(bds, a_file, a_file_hash):
 
     first_branch = join(TEMP_DIR, "a")
     first_added_file = join(first_branch, a_file_hash)
+
     assert os.path.exists(first_branch)
     assert os.path.isdir(first_branch)
     assert os.path.exists(first_added_file)
     assert os.path.isfile(first_added_file)
 
 
-def test_add_multiple_files(bds, b_file, aa_file, b_file_hash, aa_file_hash):
+def test_add_multiple_files(bds, b_file, aa_file, aa_file_hash, b_file_path):
     bds._dir_limit = 1
 
     bds.add_file(b_file)
     bds.add_file(aa_file)
 
     first_branch = join(TEMP_DIR, "a")
-    second_branch = join(TEMP_DIR, "b")
     deep_branch = join(first_branch, "a")
-    second_added_file = join(second_branch, b_file_hash)
     third_added_file = join(deep_branch, aa_file_hash)
 
     assert os.path.exists(first_branch)
@@ -145,8 +149,18 @@ def test_add_multiple_files(bds, b_file, aa_file, b_file_hash, aa_file_hash):
     assert os.path.exists(deep_branch)
     assert os.path.isdir(deep_branch)
 
-    assert os.path.exists(second_added_file)
-    assert os.path.isfile(second_added_file)
+    assert os.path.exists(b_file_path)
+    assert os.path.isfile(b_file_path)
 
     assert os.path.exists(third_added_file)
     assert os.path.isfile(third_added_file)
+
+
+def test_adding_existing_file(bds, b_file, b_file_path):
+    assert os.path.exists(b_file_path)
+    assert os.path.isfile(b_file_path)
+
+    path = bds.add_file(b_file)
+
+    assert os.path.exists(path)
+    assert os.path.isfile(path)
