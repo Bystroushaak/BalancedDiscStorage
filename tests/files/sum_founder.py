@@ -4,6 +4,7 @@
 # Interpreter version: python 2.7
 #
 # Imports =====================================================================
+import os
 import argparse
 
 import sh
@@ -11,10 +12,12 @@ import sh
 
 # Functions & classes =========================================================
 def look_for_hash(filename, startswith, number):
+    mode = "a" if number != 1 else "w"
+
     found = 0
     for cnt in xrange(99999999999999999):
-        with open(filename, "w") as f:
-            f.write(str(cnt))
+        with open(filename, mode) as f:
+            f.write(str(cnt) + "\n")
 
         file_hash = sh.sha256sum(args.filename).split()[0]
 
