@@ -63,7 +63,7 @@ class BalancedDiscStorage(object):
 
     def _create_dir_path(self, file_hash, path=None, hash_list=None):
         # first, non-recursive call - parse `file_hash`
-        if not hash_list:
+        if hash_list is None:
             hash_list = list(file_hash)
 
         # first, non-recursive call - look for subpath of `self.path`
@@ -95,16 +95,13 @@ class BalancedDiscStorage(object):
         # in full directories create new sub-directories
         return self._create_dir_path(
             file_hash=file_hash,
-            path=os.path.join(
-                path,
-                hash_list.pop(0)
-            ),
+            path=os.path.join(path, hash_list.pop(0)),
             hash_list=hash_list
         )
 
     def _dir_path_from_hash(self, file_hash, path=None, hash_list=None):
         # first, non-recursive call - parse `file_hash`
-        if not hash_list:
+        if hash_list is None:
             hash_list = list(file_hash)
 
         # first, non-recursive call - look for subpath of `self.path`
@@ -126,10 +123,7 @@ class BalancedDiscStorage(object):
             return full_path + "/"
 
         # end of recursion, if there are no more directories to look into
-        next_path = os.path.join(
-            self.path,
-            hash_list.pop(0)
-        )
+        next_path = os.path.join(path, hash_list.pop(0))
         if not os.path.exists(next_path):
             raise IOError("File not found in the structure.")
 
@@ -141,10 +135,11 @@ class BalancedDiscStorage(object):
         )
 
     def file_path_from_hash(self, file_hash):
-        return os.path.join(
-            self._dir_path_from_hash(file_hash),
-            file_hash
-        )
+        return self._dir_path_from_hash(file_hash)
+        # return os.path.join(
+        #     self._dir_path_from_hash(file_hash),
+        #     file_hash
+        # )
 
     def add_file(self, file_obj):
         self._check_interface(file_obj)
