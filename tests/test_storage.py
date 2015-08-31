@@ -76,6 +76,11 @@ def b_file_path():
     return join(TEMP_DIR, "b", b_file_hash())
 
 
+@pytest.fixture
+def aa_file_path():
+    return join(TEMP_DIR, "a", "a", aa_file_hash())
+
+
 # Tests =======================================================================
 def setup_module():
     global TEMP_DIR
@@ -164,3 +169,16 @@ def test_adding_existing_file(bds, b_file, b_file_path):
 
     assert os.path.exists(path)
     assert os.path.isfile(path)
+
+
+def test_file_path_from_hash(bds, b_file_hash, b_file_path):
+    assert bds.file_path_from_hash(b_file_hash) == b_file_path
+
+
+def test_file_path_from_bad_hash(bds):
+    with pytest.raises(IOError):
+        bds.file_path_from_hash("azgabash")
+
+
+def test_file_path_from_hash_subdirectory(bds, aa_file_hash, aa_file_path):
+    assert bds.file_path_from_hash(aa_file_hash) == aa_file_path
