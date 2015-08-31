@@ -57,6 +57,11 @@ def aa_file():
 
 
 @pytest.fixture
+def archive_file():
+    return data_file_context("archive.zip")
+
+
+@pytest.fixture
 def a_file_hash():
     return "aea92132c4cbeb263e6ac2bf6c183b5d81737f179f21efdc5863739672f0f470"
 
@@ -72,13 +77,35 @@ def aa_file_hash():
 
 
 @pytest.fixture
+def archive_file_hash():
+    return "b5770bf1233f932fb5d5729a07fc786e3040bcdbe528b70a4ad2cbc3b6eb2380"
+
+
+@pytest.fixture
 def b_file_path():
     return join(TEMP_DIR, "b", b_file_hash())
 
 
 @pytest.fixture
 def aa_file_path():
-    return join(TEMP_DIR, "a", "a", aa_file_hash())
+    file_hash = aa_file_hash()
+
+    return join(TEMP_DIR, file_hash[0], file_hash[1], aa_file_hash())
+
+
+@pytest.fixture
+def archive_file_path():
+    file_hash = archive_file_hash()
+
+    return join(TEMP_DIR, file_hash[0], file_hash)
+
+
+@pytest.fixture
+def archive_filenames():
+    return [
+        join(archive_file_path(), fn)
+        for fn in ["metadata.xml", "some.pdf"]
+    ]
 
 
 # Tests =======================================================================
@@ -182,3 +209,21 @@ def test_file_path_from_bad_hash(bds):
 
 def test_file_path_from_hash_subdirectory(bds, aa_file_hash, aa_file_path):
     assert bds.file_path_from_hash(aa_file_hash) == aa_file_path
+
+
+def test_add_archive_as_dir(bds, archive_file, archive_file_hash,
+                            archive_file_path, archive_filenames):
+    assert not os.path.exists(archive_file_path)
+
+    bds.add_archive_as_dir(archive_file)
+
+    assert os.path.exists(archive_file_path)
+    assert os.path.isdir(archive_file_path)
+
+    for filename in archive_filenames:
+        assert os.path.exists(filename)
+        assert os.path.isfile(filename)
+
+
+
+
