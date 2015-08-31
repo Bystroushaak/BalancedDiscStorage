@@ -17,7 +17,7 @@ from BalancedDiscStorage import BalancedDiscStorage
 
 
 # Variables ===================================================================
-TEMP_DIR = ""
+TEMP_DIR = None
 
 
 # Functions ===================================================================
@@ -108,7 +108,7 @@ def archive_filenames():
     ]
 
 
-# Tests =======================================================================
+# Setup =======================================================================
 def setup_module():
     global TEMP_DIR
 
@@ -119,6 +119,7 @@ def teardown_module():
     shutil.rmtree(TEMP_DIR)
 
 
+# Tests =======================================================================
 def test_init():
     bds = BalancedDiscStorage(TEMP_DIR)
 
@@ -213,6 +214,7 @@ def test_file_path_from_hash_subdirectory(bds, aa_file_hash, aa_file_path):
 
 def test_add_archive_as_dir(bds, archive_file, archive_file_hash,
                             archive_file_path, archive_filenames):
+    bds._dir_limit = 20
     assert not os.path.exists(archive_file_path)
 
     bds.add_archive_as_dir(archive_file)
@@ -288,6 +290,3 @@ def test_delete_by_file_zip(bds, archive_file, archive_file_path):
 # DO NOT PUT MORE TESTS AFTER THIS TEST - PYTEST IS BROKEN AND SO WILL BE YOUR #
 # CODE                                                                         #
 ################################################################################
-
-
-
