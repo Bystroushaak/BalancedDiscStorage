@@ -262,6 +262,16 @@ def test_delete_by_file(bds, b_file, b_file_path):
     assert not os.path.isfile(b_file_path)
 
 
+def test_delete_unknown_path(bds):
+    with pytest.raises(IOError):
+        bds.delete_by_path("/azgabash")
+
+
+def test_delete_unknown_existing_path(bds):
+    with pytest.raises(IOError):
+        bds.delete_by_path("/tmp")
+
+
 def test_delete_by_file_zip(bds, archive_file, archive_file_path):
     assert os.path.exists(archive_file_path)
     assert os.path.isdir(archive_file_path)
@@ -273,4 +283,11 @@ def test_delete_by_file_zip(bds, archive_file, archive_file_path):
 
     # check that blank directories are also cleaned
     assert not os.path.exists(join(TEMP_DIR, "b"))
+################################################################################
+# WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARN #
+# DO NOT PUT MORE TESTS AFTER THIS TEST - PYTEST IS BROKEN AND SO WILL BE YOUR #
+# CODE                                                                         #
+################################################################################
+
+
 
