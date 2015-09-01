@@ -29,7 +29,11 @@ class BalancedDiscStorage(object):
 
         Raises:
             IOError: In case that any of the assumptions failed.
+            ValueError: In case that `self.path` is not set.
         """
+        if not self.path:
+            raise ValueError("`path` argument must be set!")
+
         if not os.path.exists(self.path):
             raise IOError("`%s` not found." % self.path)
 
