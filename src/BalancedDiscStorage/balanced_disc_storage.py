@@ -7,7 +7,6 @@
 import os
 import shutil
 import hashlib
-import zipfile
 
 
 # Functions & classes =========================================================
@@ -22,7 +21,6 @@ class BalancedDiscStorage(object):
 
         self._dir_limit = 32000  #: Maximum number of files in directory.
         self._read_bs = 2**16  #: File read blocksize.
-        self._max_zipfiles = self._dir_limit  #: How many files may be in .zip
         self._hash_builder = hashlib.sha256  #: Hashing function used for FN.
 
     def _assert_path_is_rw(self):
@@ -223,59 +221,6 @@ class BalancedDiscStorage(object):
                 out_file.write(part)
 
         return final_path
-
-    def _unpack_zip(self, file_obj, path):
-        """
-        Unpack .zip archive in `file_obj` to given `path`. Make sure, that it
-        fits into limits (see :attr:`._max_zipfiles` for details).
-
-        Args:
-            file_obj (file): Opened file-like object.
-            path (str): Path into which the .zip will be unpacked.
-
-        Raises:
-            ValueError: If there is too many files in .zip archive.
-        """
-        old_cwd = os.getcwd()
-        os.chdir(path)
-
-        zip_obj = zipfile.ZipFile(file_obj)
-        for cnt, zip_info in enumerate(zip_obj.infolist()):
-            zip_obj.extract(zip_info)
-
-            if cnt >= self._max_zipfiles:
-                raise ValueError("Too many zipfiles (>%d)." % cnt)
-
-        os.chdir(old_cwd)
-
-    def add_archive_as_dir(self, zip_file_obj):
-        """
-        Add archive to the storage and unpack it.
-
-        Args:
-            zip_file_obj (file): Opened file-like object.
-
-        Returns:
-            str: Path where the `zip_file_obj` was unpacked.
-
-        Raises:
-            ValueError: If there is too many files in .zip archive. \
-                        See :attr:`._max_zipfiles` for details.
-            AssertionError: If the `zip_file_obj` is not file-like object.
-        """
-        BalancedDiscStorage._check_interface(zip_file_obj)
-
-        file_hash = self._get_hash(zip_file_obj)
-        dir_path = self._create_dir_path(file_hash)
-        full_path = os.path.join(dir_path, file_hash)
-
-        if os.path.exists(full_path):
-            shutil.rmtree(full_path)
-
-        os.mkdir(full_path)
-        self._unpack_zip(zip_file_obj, full_path)
-
-        return full_path
 
     def delete_by_file(self, file_obj):
         """
