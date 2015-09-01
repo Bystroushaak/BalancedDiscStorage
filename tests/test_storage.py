@@ -199,6 +199,11 @@ def test_adding_existing_file(bds, b_file, b_file_path):
     assert os.path.isfile(path)
 
 
+def test_adding_object_with_wrong_interface(bds):
+    with pytest.raises(AssertionError):
+        bds.add_file("hello")
+
+
 def test_file_path_from_hash(bds, b_file_hash, b_file_path):
     assert bds.file_path_from_hash(b_file_hash) == b_file_path
 
