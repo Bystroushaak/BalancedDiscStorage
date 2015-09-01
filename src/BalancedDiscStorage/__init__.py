@@ -5,3 +5,4 @@
 #
 # Imports =====================================================================
 from balanced_disc_storage import BalancedDiscStorage
+from balanced_disc_storage_z import BalancedDiscStorageZ
