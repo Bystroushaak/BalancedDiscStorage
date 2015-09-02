@@ -14,6 +14,8 @@ class PathAndHash(str):
     Note:
         This class is based on `str`, with which is fully interchangeable.
 
+        ::
+
             str(PathAndHash(path="xe", hash="asd")) == "xe"
 
     Attributes:
