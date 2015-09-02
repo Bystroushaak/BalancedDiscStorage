@@ -1,5 +1,5 @@
-BalancedDiscStorage.balanced_disc_storage module
-================================================
+BalancedDiscStorage class
+=========================
 
 .. automodule:: BalancedDiscStorage.balanced_disc_storage
     :members:

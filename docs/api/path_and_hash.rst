@@ -1,5 +1,5 @@
-BalancedDiscStorage.path_and_hash module
-========================================
+PathAndHash class
+=================
 
 .. automodule:: BalancedDiscStorage.path_and_hash
     :members:
