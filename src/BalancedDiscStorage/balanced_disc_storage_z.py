@@ -8,6 +8,7 @@ import os
 import shutil
 import zipfile
 
+from path_and_hash import PathAndHash
 from balanced_disc_storage import BalancedDiscStorage
 
 
@@ -73,4 +74,4 @@ class BalancedDiscStorageZ(BalancedDiscStorage):
         os.mkdir(full_path)
         self._unpack_zip(zip_file_obj, full_path)
 
-        return full_path
+        return PathAndHash(path=full_path, hash=file_hash)

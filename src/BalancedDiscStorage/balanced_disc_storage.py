@@ -8,6 +8,8 @@ import os
 import shutil
 import hashlib
 
+from path_and_hash import PathAndHash
+
 
 # Functions & classes =========================================================
 class BalancedDiscStorage(object):
@@ -159,7 +161,8 @@ class BalancedDiscStorage(object):
             hash_list (list, default None): Recursion argument, don't set this.
 
         Returns:
-            str: Path for given `file_hash`.
+            str: Path for given `file_hash` contained in :class:`.PathAndHash`\
+                 object.
 
         Raises:
             IOError: If the file with corresponding `file_hash` is not in \
@@ -186,9 +189,9 @@ class BalancedDiscStorage(object):
             full_path = os.path.join(path, file_hash)
 
             if os.path.isfile(full_path):
-                return full_path
+                return PathAndHash(path=full_path, hash=file_hash)
 
-            return full_path + "/"
+            return PathAndHash(path=full_path + "/", hash=file_hash)
 
         # end of recursion, if there are no more directories to look into
         next_path = os.path.join(path, hash_list.pop(0))
@@ -210,7 +213,8 @@ class BalancedDiscStorage(object):
             file_obj (file): Opened file-like object.
 
         Returns:
-            str: Path where the file-like object is stored.
+            obj: Path where the file-like object is stored contained with hash\
+                 in :class:`.PathAndHash` object.
 
         Raises:
             AssertionError: If the `file_obj` is not file-like object.
@@ -226,7 +230,7 @@ class BalancedDiscStorage(object):
             for part in self._get_file_iterator(file_obj):
                 out_file.write(part)
 
-        return final_path
+        return PathAndHash(path=final_path, hash=file_hash)
 
     def delete_by_file(self, file_obj):
         """
