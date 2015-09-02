@@ -74,7 +74,7 @@ def test_init():
 
 def test_add_archive_as_dir(bdsz, archive_file, archive_file_hash,
                             archive_file_path, archive_filenames):
-    bdsz._dir_limit = 20
+    bdsz.dir_limit = 20
     assert not os.path.exists(archive_file_path)
 
     bdsz.add_archive_as_dir(archive_file)
@@ -101,8 +101,8 @@ def test_add_archie_twice(bdsz, archive_file, archive_file_hash,
 
 
 def test_too_many_zip_files(bdsz, archive_file):
-    max_zipfiles = bdsz._max_zipfiles
-    bdsz._max_zipfiles = 1
+    max_zipfiles = bdsz.max_zipfiles
+    bdsz.max_zipfiles = 1
 
     with pytest.raises(ValueError):
         bdsz.add_archive_as_dir(archive_file)

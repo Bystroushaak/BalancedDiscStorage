@@ -21,7 +21,7 @@ class BalancedDiscStorageZ(BalancedDiscStorage):
     def __init__(self, path):
         super(BalancedDiscStorageZ, self).__init__(path)
 
-        self._max_zipfiles = self._dir_limit  #: How many files may be in .zip
+        self.max_zipfiles = self.dir_limit  #: How many files may be in .zip
 
     def _unpack_zip(self, file_obj, path):
         """
@@ -42,7 +42,7 @@ class BalancedDiscStorageZ(BalancedDiscStorage):
         for cnt, zip_info in enumerate(zip_obj.infolist()):
             zip_obj.extract(zip_info)
 
-            if cnt >= self._max_zipfiles:
+            if cnt >= self.max_zipfiles:
                 raise ValueError("Too many zipfiles (>%d)." % cnt)
 
         os.chdir(old_cwd)

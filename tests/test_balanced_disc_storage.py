@@ -143,7 +143,7 @@ def test_add_file(bds, a_file, a_file_hash):
 
 
 def test_add_multiple_files(bds, b_file, aa_file, aa_file_hash, b_file_path):
-    bds._dir_limit = 1
+    bds.dir_limit = 1
 
     bds.add_file(b_file)
     bds.add_file(aa_file)

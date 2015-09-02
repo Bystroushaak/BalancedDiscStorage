@@ -17,13 +17,13 @@ class BalancedDiscStorage(object):
     Store files, make sure, that there are never more files in one directory
     than :attr:`_dir_limit`.
     """
-    def __init__(self, path):
+    def __init__(self, path, dir_limit=32000):
         self.path = path  #: Path on which the storage operates.
         self._assert_path_is_rw()
 
-        self._dir_limit = 32000  #: Maximum number of files in directory.
-        self._read_bs = 2**16  #: File read blocksize.
-        self._hash_builder = hashlib.sha256  #: Hashing function used for FN.
+        self.dir_limit = dir_limit  #: Maximum number of files in directory.
+        self.read_bs = 2**16  #: File read blocksize.
+        self.hash_builder = hashlib.sha256  #: Hashing function used for FN.
 
     def _assert_path_is_rw(self):
         """
@@ -50,7 +50,7 @@ class BalancedDiscStorage(object):
     def _get_file_iterator(self, file_obj):
         """
         For given `file_obj` return iterator, which will read the file in
-        `self._read_bs` chunks.
+        `self.read_bs` chunks.
 
         Args:
             file_obj (file): File-like object.
@@ -60,7 +60,7 @@ class BalancedDiscStorage(object):
         """
         file_obj.seek(0)
 
-        return iter(lambda: file_obj.read(self._read_bs), '')
+        return iter(lambda: file_obj.read(self.read_bs), '')
 
     def _get_hash(self, file_obj):
         """
@@ -73,7 +73,7 @@ class BalancedDiscStorage(object):
             str: Hexdigest of the hash.
         """
         size = 0
-        hash_buider = self._hash_builder()
+        hash_buider = self.hash_builder()
         for piece in self._get_file_iterator(file_obj):
             hash_buider.update(piece)
             size += len(piece)
@@ -140,7 +140,7 @@ class BalancedDiscStorage(object):
             return path
 
         # if the directory is not yet full, use it
-        if len(files) < self._dir_limit:
+        if len(files) < self.dir_limit:
             return path
 
         # in full directories create new sub-directories
