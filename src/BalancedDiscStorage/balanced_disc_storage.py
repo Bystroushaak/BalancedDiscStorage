@@ -21,7 +21,7 @@ class BalancedDiscStorage(object):
         self.path = path  #: Path on which the storage operates.
         self._assert_path_is_rw()
 
-        self.dir_limit = dir_limit  #: Maximum number of files in directory.
+        self.dir_limit = dir_limit  #: Maximal number of files in directory.
         self.read_bs = 2**16  #: File read blocksize.
         self.hash_builder = hashlib.sha256  #: Hashing function used for FN.
 
