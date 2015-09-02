@@ -35,7 +35,7 @@ def archive_file():
 
 @pytest.fixture
 def archive_file_hash():
-    return "b5770bf1233f932fb5d5729a07fc786e3040bcdbe528b70a4ad2cbc3b6eb2380"
+    return "b5770bf1233f932fb5d5729a07fc786e3040bcdbe528b70a4ad2cbc3b6eb2380_12d"
 
 
 @pytest.fixture

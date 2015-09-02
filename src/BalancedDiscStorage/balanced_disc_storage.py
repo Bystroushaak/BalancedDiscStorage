@@ -70,13 +70,15 @@ class BalancedDiscStorage(object):
         Returns:
             str: Hexdigest of the hash.
         """
+        size = 0
         hash_buider = self._hash_builder()
         for piece in self._get_file_iterator(file_obj):
             hash_buider.update(piece)
+            size += len(piece)
 
         file_obj.seek(0)
 
-        return hash_buider.hexdigest()
+        return "%s_%x" % (hash_buider.hexdigest(), size)
 
     @staticmethod
     def _check_interface(file_obj):

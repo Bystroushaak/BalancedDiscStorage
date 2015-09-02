@@ -58,17 +58,17 @@ def aa_file():
 
 @pytest.fixture
 def a_file_hash():
-    return "aea92132c4cbeb263e6ac2bf6c183b5d81737f179f21efdc5863739672f0f470"
+    return "aea92132c4cbeb263e6ac2bf6c183b5d81737f179f21efdc5863739672f0f470_2"
 
 
 @pytest.fixture
 def b_file_hash():
-    return "b17ef6d19c7a5b1ee83b907c595526dcb1eb06db8227d650d5dda0a9f4ce8cd9"
+    return "b17ef6d19c7a5b1ee83b907c595526dcb1eb06db8227d650d5dda0a9f4ce8cd9_2"
 
 
 @pytest.fixture
 def aa_file_hash():
-    return "aae02129362d611717b6c00ad8d73bf820a0f6d88fca8e515cafe78d3a335965"
+    return "aae02129362d611717b6c00ad8d73bf820a0f6d88fca8e515cafe78d3a335965_3"
 
 
 @pytest.fixture
