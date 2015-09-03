@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.0.1
+-----
+    - Fixed package metadata files.
+
 1.0.0
 -----
     - Added test coverage.

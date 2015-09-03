@@ -1,0 +1,13 @@
+include README.rst
+include CHANGELOG.rst
+include CONTRIBUTORS.rst
+include LICENSE.txt
+
+recursive-include tests *
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+
+recursive-include docs *.rst *.py Makefile make.bat
+
+recursive-include bin *
+recursive-include src/edeposit/amqp/storage/zconf *.conf
