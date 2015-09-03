@@ -327,3 +327,10 @@ class BalancedDiscStorage(object):
 
         shutil.rmtree(path)
         self._recursive_remove_blank_dirs(path)
+
+    def __repr__(self):
+        return "%s(path=%s, dir_limit=%d)" % (
+            self.__class__.__name__,
+            repr(self.path),
+            self.dir_limit
+        )
