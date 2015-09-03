@@ -15,8 +15,8 @@ from balanced_disc_storage import BalancedDiscStorage
 # Functions & classes =========================================================
 class BalancedDiscStorageZ(BalancedDiscStorage):
     """
-    This class is the same as :class:`BalancedDiscStorage`, but it also allows
-    adding the .zip files, which are unpacked to proper path in storage.
+    This class is the same as :class:`.BalancedDiscStorage`, but it also allows
+    adding the ``.zip`` files, which are unpacked to proper path in storage.
     """
     def __init__(self, path):
         super(BalancedDiscStorageZ, self).__init__(path)
@@ -55,7 +55,8 @@ class BalancedDiscStorageZ(BalancedDiscStorage):
             zip_file_obj (file): Opened file-like object.
 
         Returns:
-            str: Path where the `zip_file_obj` was unpacked.
+            obj: Path where the `zip_file_obj` was unpacked wrapped in \
+                 :class:`.PathAndHash` structure.
 
         Raises:
             ValueError: If there is too many files in .zip archive. \
