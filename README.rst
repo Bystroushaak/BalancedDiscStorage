@@ -1,5 +1,5 @@
-BalancedDiscStorage
-===================
+Introduction
+============
 
 .. image:: https://badge.fury.io/py/BalancedDiscStorage.png
     :target: https://pypi.python.org/pypi/BalancedDiscStorage
