@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.0.3
+-----
+    - Added better exceptions handling in case that file-copying fails.
+
 1.0.2
 -----
     - Fixed missing init in doc/.

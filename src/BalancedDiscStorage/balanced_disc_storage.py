@@ -226,9 +226,17 @@ class BalancedDiscStorage(object):
         dir_path = self._create_dir_path(file_hash)
 
         final_path = os.path.join(dir_path, file_hash)
-        with open(final_path, "wb") as out_file:
-            for part in self._get_file_iterator(file_obj):
-                out_file.write(part)
+
+        def copy_to_file(from_file, to_path):
+            with open(to_path, "wb") as out_file:
+                for part in self._get_file_iterator(from_file):
+                    out_file.write(part)
+
+        try:
+            copy_to_file(from_file=file_obj, to_path=final_path)
+        except Exception:
+            os.unlink(final_path)
+            raise
 
         return PathAndHash(path=final_path, hash=file_hash)
 

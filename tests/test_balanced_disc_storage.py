@@ -30,9 +30,7 @@ def data_dir_context(filename):
 
 
 def data_file_context(filename):
-    return open(
-        data_dir_context(filename)
-    )
+    return open(data_dir_context(filename), "rb")
 
 
 # Fixtures ====================================================================

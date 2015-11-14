@@ -100,16 +100,6 @@ def test_add_archie_twice(bdsz, archive_file, archive_file_hash,
         assert os.path.isfile(filename)
 
 
-def test_too_many_zip_files(bdsz, archive_file):
-    max_zipfiles = bdsz.max_zipfiles
-    bdsz.max_zipfiles = 1
-
-    with pytest.raises(ValueError):
-        bdsz.add_archive_as_dir(archive_file)
-
-    bdsz._max_zipfiles = max_zipfiles
-
-
 def test_path_from_hash_for_zip(bdsz, archive_file_path, archive_file_hash):
     assert bdsz.file_path_from_hash(archive_file_hash) == archive_file_path
 
@@ -125,8 +115,10 @@ def test_delete_by_file_zip(bdsz, archive_file, archive_file_path):
 
     # check that blank directories are also cleaned
     assert not os.path.exists(join(TEMP_DIR, "b"))
-################################################################################
-# WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARN #
-# DO NOT PUT MORE TESTS AFTER THIS TEST - PYTEST IS BROKEN AND SO WILL BE YOUR #
-# CODE                                                                         #
-################################################################################
+
+
+def test_too_many_zip_files(bdsz, archive_file):
+    bdsz.max_zipfiles = 1
+
+    with pytest.raises(ValueError):
+        bdsz.add_archive_as_dir(archive_file)

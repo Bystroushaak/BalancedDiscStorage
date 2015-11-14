@@ -42,8 +42,15 @@ class BalancedDiscStorageZ(BalancedDiscStorage):
         for cnt, zip_info in enumerate(zip_obj.infolist()):
             zip_obj.extract(zip_info)
 
-            if cnt >= self.max_zipfiles:
-                raise ValueError("Too many zipfiles (>%d)." % cnt)
+            if cnt + 1 > self.max_zipfiles:
+                os.chdir(old_cwd)
+
+                msg = "Too many files in .zip "
+                msg += "(self.max_zipfiles == {}, but {} given).".format(
+                    self.max_zipfiles,
+                    cnt + 1,
+                )
+                raise ValueError(msg)
 
         os.chdir(old_cwd)
 
@@ -73,6 +80,11 @@ class BalancedDiscStorageZ(BalancedDiscStorage):
             shutil.rmtree(full_path)
 
         os.mkdir(full_path)
-        self._unpack_zip(zip_file_obj, full_path)
+
+        try:
+            self._unpack_zip(zip_file_obj, full_path)
+        except Exception:
+            shutil.rmtree(full_path)
+            raise
 
         return PathAndHash(path=full_path, hash=file_hash)
