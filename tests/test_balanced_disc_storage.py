@@ -119,12 +119,12 @@ def test_init_is_directory():
 def test_rw_check():
     non_writeable = join(TEMP_DIR, "non_writeable")
     os.mkdir(non_writeable)
-    os.chmod(non_writeable, 0000)
+    os.chmod(non_writeable, 0o000)
 
     with pytest.raises(IOError):
         BalancedDiscStorage(non_writeable)
 
-    os.chmod(non_writeable, 0777)
+    os.chmod(non_writeable, 0o777)
     shutil.rmtree(non_writeable)
 
 
