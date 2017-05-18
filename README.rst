@@ -7,13 +7,13 @@ Introduction
 .. image:: https://img.shields.io/pypi/dm/BalancedDiscStorage.svg
     :target: https://pypi.python.org/pypi/BalancedDiscStorage
 
-.. image:: https://readthedocs.org/projects/BalancedDiscStorage/badge/?version=latest
-    :target: http://BalancedDiscStorage.readthedocs.org/
+.. image:: https://readthedocs.org/projects/balanceddiscstorage/badge/?version=latest
+    :target: http://balanceddiscstorage.readthedocs.org/
+    
+.. image:: https://img.shields.io/github/issues/Bystroushaak/BalancedDiscStorage.svg
+    :target: https://github.com/Bystroushaak/BalancedDiscStorage/issues
 
 .. image:: https://img.shields.io/pypi/l/BalancedDiscStorage.svg
-
-.. image:: https://img.shields.io/github/issues/edeposit/BalancedDiscStorage.svg
-    :target: https://github.com/edeposit/BalancedDiscStorage/issues
 
 This module is used to provide storage for your files / archives. Storage itself makes sure, that there is never more files in one directory, than ``BalancedDiscStorage.dir_limit``.
 
