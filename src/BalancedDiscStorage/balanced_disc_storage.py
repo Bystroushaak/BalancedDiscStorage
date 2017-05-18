@@ -8,7 +8,7 @@ import os
 import shutil
 import hashlib
 
-from path_and_hash import PathAndHash
+from BalancedDiscStorage.path_and_hash import PathAndHash
 
 
 # Functions & classes =========================================================

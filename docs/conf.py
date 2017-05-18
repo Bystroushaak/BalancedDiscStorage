@@ -3,7 +3,7 @@
 #
 import os
 import sys
-import urllib
+import urllib.request, urllib.error, urllib.parse
 import os.path
 
 sys.path.insert(0, os.path.abspath('../src/'))
@@ -41,20 +41,20 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'BalancedDiscStorage'
-copyright = u'2015 Bystroushaak for E-deposit team'
+project = 'BalancedDiscStorage'
+copyright = '2015 Bystroushaak for E-deposit team'
 
 # The full version, including alpha/beta/rc tags.
 try:
-    # read data from CHANGES.rst
+    # read data from CHANGELOG.rst
     sys.path.insert(0, os.path.abspath('../'))
     from docs import getVersion
-    release = getVersion(open("../CHANGES.rst").read())
+    release = getVersion(open("../CHANGELOG.rst").read())
 except Exception:
     # this is here specially for readthedocs, which downloads only docs, not
     # other files
-    fh = urllib.urlopen("https://pypi.python.org/pypi/" + project + "/")
-    release = filter(lambda x: "<title>" in x, fh.read().splitlines())
+    fh = urllib.request.urlopen("https://pypi.python.org/pypi/" + project + "/")
+    release = [x for x in fh.read().splitlines() if "<title>" in x]
     release = release[0].split(":")[0].split()[1]
 
 # The short X.Y version.

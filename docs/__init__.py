@@ -6,7 +6,7 @@
 
 
 def allSame(s):
-    return not any(filter(lambda x: x != s[0], s))
+    return not any([x for x in s if x != s[0]])
 
 
 def hasDigit(s):
