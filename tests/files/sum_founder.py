@@ -4,16 +4,22 @@
 # Interpreter version: python 2.7
 #
 # Imports =====================================================================
-import os
 import argparse
 
 import sh
 
 
 # Functions & classes =========================================================
+def _forever_gen():
+    cnt = 0
+    while True:
+        yield cnt
+        cnt += 1
+
+
 def look_for_hash(filename, startswith, number):
     found = 0
-    for cnt in range(99999999999999999):
+    for cnt in _forever_gen():
         with open(filename, "w") as f:
             f.write(str(cnt))
 
