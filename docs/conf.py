@@ -46,10 +46,10 @@ copyright = '2015 Bystroushaak for E-deposit team'
 
 # The full version, including alpha/beta/rc tags.
 try:
-    # read data from CHANGES.rst
+    # read data from CHANGELOG.rst
     sys.path.insert(0, os.path.abspath('../'))
     from docs import getVersion
-    release = getVersion(open("../CHANGES.rst").read())
+    release = getVersion(open("../CHANGELOG.rst").read())
 except Exception:
     # this is here specially for readthedocs, which downloads only docs, not
     # other files
