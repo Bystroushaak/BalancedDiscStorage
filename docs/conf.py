@@ -3,7 +3,7 @@
 #
 import os
 import sys
-import urllib.request, urllib.parse, urllib.error
+import urllib2
 import os.path
 
 sys.path.insert(0, os.path.abspath('../src/'))
@@ -53,7 +53,7 @@ try:
 except Exception:
     # this is here specially for readthedocs, which downloads only docs, not
     # other files
-    fh = urllib.request.urlopen("https://pypi.python.org/pypi/" + project + "/")
+    fh = urllib2.urlopen("https://pypi.python.org/pypi/" + project + "/")
     release = [x for x in fh.read().splitlines() if "<title>" in x]
     release = release[0].split(":")[0].split()[1]
 

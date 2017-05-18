@@ -124,7 +124,7 @@ def test_rw_check():
     with pytest.raises(IOError):
         BalancedDiscStorage(non_writeable)
 
-    os.chmod(non_writeable, 0o777)
+    os.chmod(non_writeable, 0777)
     shutil.rmtree(non_writeable)
 
 
