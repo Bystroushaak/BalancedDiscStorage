@@ -8,8 +8,8 @@ import os
 import shutil
 import zipfile
 
-from .path_and_hash import PathAndHash
-from .balanced_disc_storage import BalancedDiscStorage
+from path_and_hash import PathAndHash
+from balanced_disc_storage import BalancedDiscStorage
 
 
 # Functions & classes =========================================================

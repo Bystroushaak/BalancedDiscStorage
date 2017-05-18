@@ -13,7 +13,7 @@ import sh
 # Functions & classes =========================================================
 def look_for_hash(filename, startswith, number):
     found = 0
-    for cnt in range(99999999999999999):
+    for cnt in xrange(99999999999999999):
         with open(filename, "w") as f:
             f.write(str(cnt))
 
@@ -21,7 +21,7 @@ def look_for_hash(filename, startswith, number):
 
         if file_hash.startswith(startswith):
             found += 1
-            print(file_hash, cnt)
+            print file_hash, cnt
 
             if found == number:
                 break
